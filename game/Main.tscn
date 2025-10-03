@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccmr037jucea2"]
+[gd_scene load_steps=8 format=3 uid="uid://ccmr037jucea2"]
 
 [ext_resource type="Script" uid="uid://dd6eqao5i6iam" path="res://PlayerController.cs" id="1_uu6xs"]
 [ext_resource type="Texture2D" uid="uid://cmsunywnrf3cr" path="res://icon.svg" id="2_r0du0"]
+[ext_resource type="Script" uid="uid://dtyp1o8f24pt0" path="res://PlayerStats.cs" id="3_fos0i"]
+[ext_resource type="Script" uid="uid://chp7oad0clbb8" path="res://HealthBar.cs" id="4_3dxm6"]
+[ext_resource type="PackedScene" uid="uid://do54yig24sdhp" path="res://Enemy.tscn" id="5_lgr22"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uu6xs"]
 size = Vector2(129, 129)
@@ -21,6 +24,9 @@ shape = SubResource("RectangleShape2D_uu6xs")
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture = ExtResource("2_r0du0")
 
+[node name="PlayerStats" type="Node" parent="Player"]
+script = ExtResource("3_fos0i")
+
 [node name="Ground" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
@@ -30,3 +36,29 @@ shape = SubResource("RectangleShape2D_r0du0")
 [node name="Polygon2D" type="Polygon2D" parent="Ground"]
 position = Vector2(40, 258)
 polygon = PackedVector2Array(-40, 390, 1112, 390, 1112, 344, -40, 344)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_3dxm6")
+
+[node name="HealthBar" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 33.0
+offset_right = 260.0
+offset_bottom = 62.0
+color = Color(0, 0.65882355, 0, 1)
+
+[node name="Label" type="Label" parent="Control/HealthBar"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 46.0
+offset_bottom = 26.0
+text = "100"
+
+[node name="Node2D" parent="." instance=ExtResource("5_lgr22")]
+position = Vector2(875, 536)

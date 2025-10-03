@@ -4,18 +4,26 @@ using System;
 public partial class PlayerController : CharacterBody2D
 {
 	// Variables
-	public float Speed = 200.0f;
-	public float JumpSpeed = -1000.0f;
-	public int Gravity = 100;
-	public int DashSpeed = 1000;
-	public float DashDuration = 0.15f;
-	public float DashCooldown = 0.5f;
+	[Export] public float Speed = 200.0f;
+	[Export] public float JumpSpeed = -1000.0f;
+	[Export] public int Gravity = 100;
+	[Export] public int DashSpeed = 1000;
+	[Export] public float DashDuration = 0.15f;
+	[Export] public float DashCooldown = 0.5f;
+	private PlayerStats playerStats;
 
 	// Variable Tracking
 	private bool isDashing = false;
 	private float dashTimer = 0f;
 	private float cooldownTimer = 0f;
 	private Vector2 dashDirection = Vector2.Zero;
+
+	public override void _Ready()
+	{
+		playerStats = GetNode<PlayerStats>("PlayerStats");
+		GD.Print("PlayerStats reference: " + (playerStats != null ? "FOUND" : "NULL"));
+	}
+
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -62,9 +70,9 @@ public partial class PlayerController : CharacterBody2D
 	{
 		Vector2 direction = Vector2.Zero;
 
-		if (Input.IsActionPressed("ui_right"))
+		if (Input.IsActionPressed("right"))
 			direction.X += 1;
-		if (Input.IsActionPressed("ui_left"))
+		if (Input.IsActionPressed("left"))
 			direction.X -= 1;
 
 		return direction.Normalized(); // Normalize so diagonal dashes aren't faster
@@ -127,6 +135,15 @@ public partial class PlayerController : CharacterBody2D
 		if (!IsOnFloor())
 		{
 			Velocity = new Vector2(Velocity.X, Velocity.Y + Gravity * delta);
+		}
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed("ui_accept")) // Space bar
+		{
+			playerStats.TakeDamage(10);
+			GD.Print("Manual test: Took 10 damage. Health should be: " + playerStats.CurrentHealth);
 		}
 	}
 

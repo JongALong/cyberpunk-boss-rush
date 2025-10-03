@@ -11,15 +11,15 @@ public partial class PlayerStats : Node
 	public delegate void DiedEventHandler();
 
 	// Health Stat
-	public int MaxHealth = 100;
+	[Export] public int MaxHealth = 100;
 	public int CurrentHealth { get; private set; }
 
 	//Dash Stat
-	public int DashCharges = 1;
+	[Export] public int DashCharges = 1;
 	public int CurrentDashes { get; private set; }
 
 	// Player Level
-	public int Level = 1;
+	[Export] public int Level = 1;
 
 	public override void _Ready()
 	{

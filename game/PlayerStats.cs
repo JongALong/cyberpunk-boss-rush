@@ -10,6 +10,8 @@ public partial class PlayerStats : Node
 	[Signal]
 	public delegate void DiedEventHandler();
 
+	public float JumpVelocity = -1000.0f;
+
 	// Health Stat
 	[Export] public int MaxHealth = 100;
 	public int CurrentHealth { get; private set; }

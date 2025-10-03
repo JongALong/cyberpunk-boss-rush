@@ -7,7 +7,7 @@ public partial class PlayerController : CharacterBody2D
 	[Export] public float WalkSpeed = 150.0f;
 	[Export] public float RunSpeed = 500.0f;
 	[Export] public float JumpSpeed = -1000.0f;
-	[Export] public int Gravity = 100;
+	[Export] public int Gravity = 80;
 	[Export] public float DashDistance = 200f;
  	[Export] public int DashSpeed = 1000;
 	[Export] public float DashTime = 0.05f;

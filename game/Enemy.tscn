@@ -4,21 +4,21 @@
 [ext_resource type="Texture2D" uid="uid://cmsunywnrf3cr" path="res://icon.svg" id="2_2hac7"]
 [ext_resource type="Script" uid="uid://evctvtyylvt3" path="res://EnemyStats.cs" id="3_2hac7"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_e6d4v"]
-size = Vector2(130, 130)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2hac7"]
+size = Vector2(128, 129)
 
-[node name="Node2D" type="Node2D"]
-
-[node name="Enemy" type="Area2D" parent="."]
+[node name="Enemy" type="Area2D" groups=["Enemy"]]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_s7bn3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
-position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_e6d4v")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_2hac7")
 debug_color = Color(1, 0, 0, 0.41960785)
 
-[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2hac7")
 
-[node name="EnemyStats" type="Node" parent="Enemy"]
+[node name="EnemyStats" type="Node" parent="."]
 script = ExtResource("3_2hac7")

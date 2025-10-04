@@ -10,6 +10,8 @@ public partial class Enemy : Area2D
 		// Connect the signal
 		BodyEntered += OnBodyEntered;
 		enemyStats = GetNode<EnemyStats>("EnemyStats");
+		enemyStats.EnemyDied += OnEnemyDied;
+		GetNode<EnemyStats>("EnemyStats").TakeDamage(5);
 	}
 
 	// Contact damage to player

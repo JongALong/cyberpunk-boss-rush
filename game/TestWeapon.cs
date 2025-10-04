@@ -1,57 +1,75 @@
 using Godot;
 using System;
 
-public partial class TestWeapon : Node
+public partial class TestWeapon : Node2D
 {
-    // Variables
-    [Export] public int WeaponDamage = 5;
-    [Export] public float AttackSpeed = 10f;
-    [Export] public PackedScene ProjectileScene;
+	// Variables
+	[Export] public int Damage = 5;
+	[Export] public float AttackSpeed = 10f;
+	[Export] public PackedScene ProjectileScene;
 
-    private bool canAttack = false;
-    private float attackTime = 0f;
-    private Node2D player;
+	private bool canAttack = true;
+	private float attackTime = 0f;
+	private Node2D player;
 
 
-    public override void _Ready()
-    {
-        player = GetParent<Node2D>();
-    }
+	public override void _Ready()
+	{
+		player = GetParent<Node2D>();
+	}
 
-    public override void _Process(double delta)
-    {
-        float deltaFloat = (float)delta;
+	public override void _Process(double delta)
+	{
+		float deltaFloat = (float)delta;
 
-        if (attackTime > 0)
-        {
-            deltaFloat -= attackTime;
+		if (!canAttack)
+		{
+			attackTime -= deltaFloat;
 
-            if (attackTime <= 0)
-            {
-                canAttack = true;
-            }
-        }
-    }
+			if (attackTime <= 0)
+			{
+				canAttack = true;
+				attackTime = 0;
+			}
+		}
+	}
 
-    public bool TryAttack()
-    {
-        if (!canAttack) return false;
+	public bool TryAttack()
+	{
+		if (!canAttack)
+		{
+			return false;
+		}
 
-        Vector2 mousePos = GetGetMousePosition();
+		Vector2 mousePos = GetGlobalMousePosition();
+		Vector2 direction = (mousePos - player.GlobalPosition).Normalized();
+		SpawnProjectile(direction);
 
-        Vector2 direction = (mousePos - player.GlobalPosition).Normalized();
+		canAttack = false;
+		attackTime = 1.0f / AttackSpeed;
 
-        SpawnPorjectile(direction);
+		return true;
+	}
 
-        canAttack = false;
-        attackTime = AttackSpeed;
+	private void SpawnProjectile(Vector2 direction)
+	{
+		if (ProjectileScene == null)
+		{
+			return;
+		}
 
-        return true;
-    }
+		var projectile = ProjectileScene.Instantiate<Node2D>();
 
-    private void SpawnPorjectile()
-    {
-        
-    }
+		projectile.GlobalPosition = player.GlobalPosition;
+		projectile.Rotation = direction.Angle();
+
+		GetTree().CurrentScene.AddChild(projectile);
+
+		var projectileScript = projectile as Projectile;
+		if (projectileScript != null)
+		{
+			projectileScript.Initialize(direction, Damage);
+		}
+	}
 
 }

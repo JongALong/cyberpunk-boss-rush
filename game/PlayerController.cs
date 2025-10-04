@@ -9,7 +9,7 @@ public partial class PlayerController : CharacterBody2D
 	[Export] public float JumpSpeed = -1000.0f;
 	[Export] public int Gravity = 80;
 	[Export] public float DashDistance = 200f;
- 	[Export] public int DashSpeed = 1000;
+	[Export] public int DashSpeed = 1000;
 	[Export] public float DashTime = 0.05f;
 	[Export] public float DashDuration = 0.15f;
 	[Export] public float DashCooldown = 0.25f;
@@ -25,6 +25,12 @@ public partial class PlayerController : CharacterBody2D
 	private Vector2 dashDirection = Vector2.Zero;
 	private Vector2 dashStartDistance = Vector2.Zero;
 
+	// Signals
+	[Signal]
+	public delegate void ShootEventHandler();
+	private PackedScene projectile = GD.Load<PackedScene>("res://Projectile.tscn");
+
+	// Functions
 	public override void _Ready()
 	{
 		playerStats = GetNode<PlayerStats>("PlayerStats");
@@ -229,9 +235,9 @@ public partial class PlayerController : CharacterBody2D
 	private void ApplyNormalMovement(Vector2 inputDirection, float delta)
 	{
 		float currentSpeed = isRunning ? RunSpeed : WalkSpeed;
-		
+
 		Velocity = new Vector2(0, Velocity.Y);
-		
+
 		if (inputDirection != Vector2.Zero)
 		{
 			Velocity = new Vector2(inputDirection.X * currentSpeed, Velocity.Y);
@@ -245,4 +251,21 @@ public partial class PlayerController : CharacterBody2D
 			Velocity = new Vector2(Velocity.X, Velocity.Y + Gravity * delta);
 		}
 	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButton)
+		{
+			if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed)
+			{
+				EmitSignal(SignalName.Shoot);
+			}
+		}
+	}
+
+	public override void _Process(double delta)
+	{
+		LookAt(GetGlobalMousePosition());
+	}
+
 }

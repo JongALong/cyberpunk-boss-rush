@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccmr037jucea2"]
+[gd_scene load_steps=10 format=3 uid="uid://ccmr037jucea2"]
 
 [ext_resource type="Script" uid="uid://dd6eqao5i6iam" path="res://PlayerController.cs" id="1_uu6xs"]
 [ext_resource type="Texture2D" uid="uid://cmsunywnrf3cr" path="res://icon.svg" id="2_r0du0"]
 [ext_resource type="Script" uid="uid://dtyp1o8f24pt0" path="res://PlayerStats.cs" id="3_fos0i"]
+[ext_resource type="Script" uid="uid://gitr6ur3tl5w" path="res://TestWeapon.cs" id="4_lgr22"]
 [ext_resource type="PackedScene" uid="uid://byagu33pwlrpx" path="res://HealthBar.tscn" id="5_fos0i"]
 [ext_resource type="PackedScene" uid="uid://do54yig24sdhp" path="res://Enemy.tscn" id="5_lgr22"]
+[ext_resource type="PackedScene" uid="uid://cxlq7olxm5dm7" path="res://Projectile.tscn" id="7_trn2v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uu6xs"]
 size = Vector2(129, 129)
@@ -27,6 +29,10 @@ texture = ExtResource("2_r0du0")
 [node name="PlayerStats" type="Node" parent="Player"]
 script = ExtResource("3_fos0i")
 
+[node name="TestWeapon" type="Node2D" parent="Player"]
+script = ExtResource("4_lgr22")
+ProjectileScene = ExtResource("7_trn2v")
+
 [node name="Ground" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
@@ -44,5 +50,7 @@ offset_right = 70.0
 offset_bottom = 49.0
 PlayerStats = NodePath("../Player/PlayerStats")
 
-[node name="Node2D" parent="." instance=ExtResource("5_lgr22")]
-position = Vector2(873, 538)
+[node name="Enemy" parent="." instance=ExtResource("5_lgr22")]
+position = Vector2(916, 534)
+
+[connection signal="Shoot" from="Player" to="Player/TestWeapon" method="TryAttack"]
